@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Member;
 use Validator;
+use Illuminate\Support\Facades\Hash;
 
 
 class MemberAuthController extends Controller
@@ -110,34 +111,75 @@ class MemberAuthController extends Controller
     }
 
 
-    protected function update_profile(){
-
+    public function update_profile()
+    {
+        $validator = Validator::make(request()->all(), [
+            'id'              => 'required|exists:admins,id',
+            'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'first_name'      => 'required|string|max:255',
+            'last_name'       => 'required|string|max:255',
+            'phone_number'    => 'required|string|max:255',
+            'address'         => 'required|string|max:255',
+            'city'            => 'required|string|max:255',
+            'code_postal'     => 'required|string|max:255',
+        ]);
+    
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400);
+        }
+    
+        $member = Member::where('id', request()->id)->first();
+    
+        // Check if a profile picture is uploaded
+        if (request()->hasFile('profile_picture')) {
+            // Remove the old image if it exists
+            if ($member->profile_picture_url && file_exists(public_path($member->profile_picture_url))) {
+                unlink(public_path($member->profile_picture_url));
+            }
+    
+            // Save the new image
+            $imageName = time() . '.' . request()->profile_picture->extension();
+            request()->profile_picture->move(public_path('images/member'), $imageName);
+    
+            // Update the profile picture URL
+            $member->profile_picture_url = 'images/member/' . $imageName;
+        }
+    
+        // Update the name
+        $member->first_name   = request()->first_name;
+        $member->last_name    = request()->last_name;
+        $member->address      = request()->address;
+        $member->city         = request()->city;
+        $member->phone_number = request()->phone_number;
+        $member->code_postal  = request()->code_postal;
+        $member->save();
+    
+        return response()->json($member, 200);
     }
 
 
-    protected function update_password(){
+    public function update_password(){
         $validator = Validator::make(request()->all(), [
-            'id'               => 'required',
+            'id'               => 'required|exists:admins,id',
             'current_password' => 'required',
             'new_password'     => 'required|confirmed|min:8',
         ]);
-
-        if($validator->fails()){
-            return response()->json($validator->errors()->toJson(), 400);
+    
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400);
         }
-
-        $member = Member::where('id',request()->id);
-        // $admin->name = request()->name;
-        if($member->password == bcrypt(request()->current_password)){
-
-            $member->password = bcrypt(request()->new_password);
+    
+        $member = Member::where('id', request()->id)->first();
+    
+        // Check if the current password is correct
+        if (Hash::check(request()->current_password, $member->password)) {
+            // Update to the new password
+            $member->password = Hash::make(request()->new_password);
             $member->save();
-            return response()->json($member, 201);
+    
+            return response()->json($member, 200);
+        } else {
+            return response()->json(['error' => 'Current password is incorrect'], 400);
         }
-
-        else{
-            return response()->json("there is an error", 400);
-        }
-
     }
 }

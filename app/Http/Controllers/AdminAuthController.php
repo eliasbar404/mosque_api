@@ -141,8 +141,7 @@ class AdminAuthController extends Controller
 
 
 
-    public function update_password()
-{
+    public function update_password(){
     $validator = Validator::make(request()->all(), [
         'id'               => 'required|exists:admins,id',
         'current_password' => 'required',

@@ -40,8 +40,8 @@ Route::group([
     Route::post('/me', [MemberAuthController::class, 'me'])->middleware('auth:member')->name('me');
 
     // update profile
-    Route::put('/update_profile/{id}',  [MemberAuthController::class, 'update_profile'])->middleware('auth:member')->name('update_profile');
+    Route::post('/update_profile',  [MemberAuthController::class, 'update_profile'])->middleware('auth:member')->name('update_profile');
 
     // update password
-    Route::put('/update_password/{id}',  [MemberAuthController::class, 'update_password'])->middleware('auth:member')->name('update_password');
+    Route::post('/update_password',  [MemberAuthController::class, 'update_password'])->middleware('auth:member')->name('update_password');
 });
