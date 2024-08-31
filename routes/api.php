@@ -17,6 +17,12 @@ Route::group([
     Route::post('/logout', [AdminAuthController::class, 'logout'])->middleware('auth:admin')->name('logout');
     Route::post('/refresh', [AdminAuthController::class, 'refresh'])->middleware('auth:admin')->name('refresh');
     Route::post('/me', [AdminAuthController::class, 'me'])->middleware('auth:admin')->name('me');
+
+    // update profile
+    Route::post('/update_profile',  [AdminAuthController::class, 'update_profile'])->middleware('auth:admin')->name('update_profile');
+
+    // update password
+    Route::post('/update_password', [AdminAuthController::class, 'update_password'])->middleware('auth:admin')->name('update_password');
 });
 
 
@@ -32,4 +38,10 @@ Route::group([
     Route::post('/logout', [MemberAuthController::class, 'logout'])->middleware('auth:member')->name('logout');
     Route::post('/refresh', [MemberAuthController::class, 'refresh'])->middleware('auth:member')->name('refresh');
     Route::post('/me', [MemberAuthController::class, 'me'])->middleware('auth:member')->name('me');
+
+    // update profile
+    Route::put('/update_profile/{id}',  [MemberAuthController::class, 'update_profile'])->middleware('auth:member')->name('update_profile');
+
+    // update password
+    Route::put('/update_password/{id}',  [MemberAuthController::class, 'update_password'])->middleware('auth:member')->name('update_password');
 });

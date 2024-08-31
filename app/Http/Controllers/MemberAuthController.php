@@ -108,4 +108,36 @@ class MemberAuthController extends Controller
             'expires_in' => auth()->guard('member')->factory()->getTTL() * 60
         ]);
     }
+
+
+    protected function update_profile(){
+
+    }
+
+
+    protected function update_password(){
+        $validator = Validator::make(request()->all(), [
+            'id'               => 'required',
+            'current_password' => 'required',
+            'new_password'     => 'required|confirmed|min:8',
+        ]);
+
+        if($validator->fails()){
+            return response()->json($validator->errors()->toJson(), 400);
+        }
+
+        $member = Member::where('id',request()->id);
+        // $admin->name = request()->name;
+        if($member->password == bcrypt(request()->current_password)){
+
+            $member->password = bcrypt(request()->new_password);
+            $member->save();
+            return response()->json($member, 201);
+        }
+
+        else{
+            return response()->json("there is an error", 400);
+        }
+
+    }
 }
