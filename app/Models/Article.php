@@ -22,10 +22,13 @@ class Article extends Model
 
     protected $fillable = [
         'id',
-        '',
-        '',
-        '',
-        ''
+        'title',
+        'slug',
+        'description',
+        'image',
+        'status',
+        'view_count',
+        'published_at'
     ];
 
 

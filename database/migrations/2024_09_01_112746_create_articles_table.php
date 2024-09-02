@@ -13,9 +13,15 @@ return new class extends Migration
     {
         Schema::create('articles', function (Blueprint $table) {
             $table->uuid('id')->primary();
+            $table->string('title'); // Article title
+            $table->string('slug')->unique()->nullable(); // SEO-friendly URL slug
+            $table->longText('description'); // Article content, use mediumText or longText if needed
 
+            $table->string('image')->nullable(); 
+            $table->enum('status',['draft','published'])->default('draft');
 
-            $table->enum('status',['active','unactive'])->default('active');
+            $table->integer('view_count')->default(0); // View count
+            $table->timestamp('published_at')->nullable();
             $table->timestamps();
         });
     }
