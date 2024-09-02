@@ -1,0 +1,47 @@
+# Admin Auth 
+http://localhost:8000/api/admin/auth/register #POST data_body:{name,email,password,password_confirmation}
+http://localhost:8000/api/admin/auth/login    #POST data_body:{email,password}
+http://localhost:8000/api/admin/auth/logout   #POST token
+http://localhost:8000/api/admin/auth/refresh  #POST token
+http://localhost:8000/api/admin/auth/me       #POST token
+
+# Member Auth
+
+http://localhost:8000/api/member/auth/register #POST data_body:{name,email,password,password_confirmation}
+http://localhost:8000/api/member/auth/login    #POST data_body:{email,password}
+http://localhost:8000/api/member/auth/logout   #POST token
+http://localhost:8000/api/member/auth/refresh  #POST token
+http://localhost:8000/api/member/auth/me       #POST token
+
+
+# Update Profile and Password for Admin
+
+http://localhost:8000/api/admin/auth/update_profile  #POST data:{id,name,profile_picture}  + token
+http://localhost:8000/api/admin/auth/update_password #POST data:{id,current_password,new_password,new_password_confirmation} + token
+
+# Update Profile and Password for Member
+
+http://localhost:8000/api/member/auth/update_profile  #POST data:{id,first_name,last_name,profile_picture,address,city,code_postal,phone_number} + token
+http://localhost:8000/api/member/auth/update_password #POST data:{id,current_password,new_password,new_password_confirmation}  + token
+
+
+# Contacts 
+http://localhost:8000/api/contacts          #GET    #to get all contacts + admin token
+http://localhost:8000/api/contacts/...id... #GET    #to get one contact  + admin token
+http://localhost:8000/api/contacts/...id... #DELETE #to delete contact   + admin token
+http://localhost:8000/api/contacts          #POST   #to create contact # data {first_name,last_name,phone_number,email,message}
+http://localhost:8000/api/contact           #PUT    #read contact      # no data we just change the status to readed  + admin token
+
+# Articles 
+
+http://localhost:8000/api/articles          #GET    #to get all articles
+http://localhost:8000/api/articles/..id..   #GET    #to get one article by id
+http://localhost:8000/api/articles          #POST   #to create new article     #data:{title,slug,image,descritpion} + admin token
+http://localhost:8000/api/articles/..id..   #PUT    #to update article         #data:{title,slug,image,description} + admin token
+http://localhost:8000/api/articles/..id..   #DELETE #to delete article by      + admin token
+
+http://localhost:8000/api/articles/..id../publish   #PUT  #to publish article  + admin token
+http://localhost:8000/api/articles/like             #POST #to like article     #data:{article_id,member_id} + member token
+http://localhost:8000/api/articles/comment          #POST #to comment article  #data:{article_id,member_id,comment} + member token
+
+http://localhost:8000/api/articles/..id../view      #PUT  #to increace article view count

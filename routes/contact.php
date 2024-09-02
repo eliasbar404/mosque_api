@@ -6,7 +6,7 @@ use App\Http\Controllers\ContactController;
 
 Route::group([
     'middleware' => 'api',
-    'prefix' => 'contact'
+    'prefix' => 'contacts'
 ], function ($router) {
 
     Route::post('/'      ,[ContactController::class, 'Create_Contact'])->name('createContact');

@@ -49,3 +49,6 @@ Route::group([
 
 // Contact Routes
 require __DIR__.'/contact.php';
+
+// Article Routes
+require __DIR__.'/article.php';
