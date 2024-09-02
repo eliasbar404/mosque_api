@@ -5,7 +5,6 @@ use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\MemberAuthController;
 
 
-
 // ------ Admin Auth Routes ------
 // -------------------------------
 Route::group([
@@ -45,3 +44,8 @@ Route::group([
     // update password
     Route::post('/update_password',  [MemberAuthController::class, 'update_password'])->middleware('auth:member')->name('update_password');
 });
+
+
+
+// Contact Routes
+require __DIR__.'/contact.php';
