@@ -45,3 +45,19 @@ http://localhost:8000/api/articles/like             #POST #to like article     #
 http://localhost:8000/api/articles/comment          #POST #to comment article  #data:{article_id,member_id,comment} + member token
 
 http://localhost:8000/api/articles/..id../view      #PUT  #to increace article view count
+
+
+# Events
+
+http://localhost:8000/api/events            #GET    #to get all events
+http://localhost:8000/api/events/..id..     #GET    #to get one event by id
+http://localhost:8000/api/events            #POST   #to create new event     #data:{title,slug,image,descritpion,start_time,end_time} + admin token
+http://localhost:8000/api/events/..id..     #PUT    #to update event         #data:{title,slug,image,description,start_time,end_time} + admin token
+http://localhost:8000/api/events/..id..     #DELETE #to delete event by   + admin token
+
+
+http://localhost:8000/api/events/..id../publish   #PUT  #to publish event + admin token
+http://localhost:8000/api/events/..id../view      #PUT  #to increace event view count by 1
+
+http://localhost:8000/api/events/join                   #POST  #to member join event  #data:{member_id,event_id,note} + member token
+http://localhost:8000/api/events/join/..id../status     #PUT   #to accept or reject member join  + admin token
