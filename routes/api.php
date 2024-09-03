@@ -52,3 +52,6 @@ require __DIR__.'/contact.php';
 
 // Article Routes
 require __DIR__.'/article.php';
+
+// Event  Routes
+require __DIR__.'/events.php';
