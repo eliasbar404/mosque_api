@@ -54,26 +54,26 @@ Route::group([
     'middleware' => 'api',
     'prefix' => 'subadmin/auth'
 ], function ($router) {
-    Route::post('/register', [SubAdminAuthController::class, 'register'])->name('register');
+    Route::post('/register', [SubAdminAuthController::class, 'register'])->middleware('auth:admin')->name('register');
     Route::post('/login', [SubAdminAuthController::class, 'login'])->name('login');
-    Route::post('/logout', [SubAdminAuthController::class, 'logout'])->middleware('auth:member')->name('logout');
-    Route::post('/refresh', [SubAdminAuthController::class, 'refresh'])->middleware('auth:member')->name('refresh');
-    Route::post('/me', [SubAdminAuthController::class, 'me'])->middleware('auth:member')->name('me');
+    Route::post('/logout', [SubAdminAuthController::class, 'logout'])->middleware('auth:subadmin')->name('logout');
+    Route::post('/refresh', [SubAdminAuthController::class, 'refresh'])->middleware('auth:subadmin')->name('refresh');
+    Route::post('/me', [SubAdminAuthController::class, 'me'])->middleware('auth:subadmin')->name('me');
 
     // update profile
-    Route::post('/update_profile',  [SubAdminAuthController::class, 'update_profile'])->middleware('auth:member')->name('update_profile');
+    Route::post('/update_profile',  [SubAdminAuthController::class, 'update_profile'])->middleware('auth:subadmin')->name('update_profile');
 
     // update password
-    Route::post('/update_password',  [SubAdminAuthController::class, 'update_password'])->middleware('auth:member')->name('update_password');
+    Route::post('/update_password',  [SubAdminAuthController::class, 'update_password'])->middleware('auth:subadmin')->name('update_password');
 });
 
 
 
 // Contact Routes
 require __DIR__.'/contact.php';
-
 // Article Routes
 require __DIR__.'/article.php';
-
 // Event  Routes
 require __DIR__.'/events.php';
+// Manage Users Routes
+require __DIR__.'/manageUsers.php';
