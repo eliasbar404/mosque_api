@@ -19,6 +19,7 @@ class SubAdminAuthController extends Controller
         $validator = Validator::make(request()->all(), [
             'name' => 'required',
             'email' => 'required|email|unique:sub_admins',
+            'phone_number' => 'required|unique:sub_admins',
             'password' => 'required|confirmed|min:8',
         ]);
 
@@ -31,6 +32,7 @@ class SubAdminAuthController extends Controller
         $subAdmin->id   = \Illuminate\Support\Str::uuid(); // Generate UUID
         $subAdmin->name = request()->name;
         $subAdmin->email = request()->email;
+        $subAdmin->phone_number = request()->phone_number;
         $subAdmin->password = bcrypt(request()->password);
         $subAdmin->save();
   

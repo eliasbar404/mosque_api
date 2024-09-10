@@ -32,7 +32,8 @@ class SubAdmin extends Authenticatable implements JWTSubject
         'email',
         'password',
         'profile_picture_url',
-        'status'
+        'status',
+        'phone_number'
     ];
 
     /**
