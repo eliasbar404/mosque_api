@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\MemberAuthController;
+use App\Http\Controllers\SubAdminAuthController;
 
 
 // ------ Admin Auth Routes ------
@@ -43,6 +44,27 @@ Route::group([
 
     // update password
     Route::post('/update_password',  [MemberAuthController::class, 'update_password'])->middleware('auth:member')->name('update_password');
+});
+
+
+//-------- Sub Admin Auth
+// -----------------------
+
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'subadmin/auth'
+], function ($router) {
+    Route::post('/register', [SubAdminAuthController::class, 'register'])->name('register');
+    Route::post('/login', [SubAdminAuthController::class, 'login'])->name('login');
+    Route::post('/logout', [SubAdminAuthController::class, 'logout'])->middleware('auth:member')->name('logout');
+    Route::post('/refresh', [SubAdminAuthController::class, 'refresh'])->middleware('auth:member')->name('refresh');
+    Route::post('/me', [SubAdminAuthController::class, 'me'])->middleware('auth:member')->name('me');
+
+    // update profile
+    Route::post('/update_profile',  [SubAdminAuthController::class, 'update_profile'])->middleware('auth:member')->name('update_profile');
+
+    // update password
+    Route::post('/update_password',  [SubAdminAuthController::class, 'update_password'])->middleware('auth:member')->name('update_password');
 });
 
 
