@@ -19,7 +19,7 @@ Route::group([
     Route::post('/me', [AdminAuthController::class, 'me'])->middleware('auth:admin')->name('me');
 
     // update profile
-    Route::post('/update_profile',  [AdminAuthController::class, 'update_profile'])->middleware('auth:admin')->name('update_profile');
+    Route::post('/update_profile/{id}',  [AdminAuthController::class, 'update_profile'])->middleware('auth:admin')->name('update_profile');
 
     // update password
     Route::post('/update_password', [AdminAuthController::class, 'update_password'])->middleware('auth:admin')->name('update_password');

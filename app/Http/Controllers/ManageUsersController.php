@@ -69,19 +69,21 @@ class ManageUsersController extends Controller
 
     //----- Change subAdmin status --
     //-------------------------------
-    public function subAdmin_status($id){
+    public function subAdmin_unactive($id){
         $subAdmin = SubAdmin::where('id',$id)->first();
-        if($subAdmin->stauts == 'active'){
-            $subAdmin->status = 'unactive';
-            return response()->json("unactive sub Admin successfully!", 200);
-        }
-        else{
-            $subAdmin->status = 'active';
-            return response()->json("active sub Admin successfully!", 200);
-        }
-    
-        return response()->json("There is an error", 400);
 
+        $subAdmin->status = 'unactive';
+        $subAdmin->save();
+
+        return response()->json("unactive sub Admin successfully!", 200);
+    }
+    public function subAdmin_active($id){
+        $subAdmin = SubAdmin::where('id',$id)->first();
+
+        $subAdmin->status = 'active';
+        $subAdmin->save();
+
+        return response()->json("unactive sub Admin successfully!", 200);
     }
 
     //----- Delete sub Admin -----

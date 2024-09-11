@@ -102,19 +102,19 @@ class AdminAuthController extends Controller
     }
 
 
-    public function update_profile()
+    public function update_profile($id)
     {
         $validator = Validator::make(request()->all(), [
-            'id'              => 'required|exists:admins,id',
-            'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'name'            => 'required|string|max:255',
+            'email'           => 'required|email',
+            'profile_picture' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
     
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
         }
     
-        $admin = Admin::where('id', request()->id)->first();
+        $admin = Admin::where('id', $id)->first();
     
         // Check if a profile picture is uploaded
         if (request()->hasFile('profile_picture')) {
@@ -132,7 +132,8 @@ class AdminAuthController extends Controller
         }
     
         // Update the name
-        $admin->name = request()->name;
+        $admin->name  = request()->name;
+        $admin->email = request()->email;
         $admin->save();
     
         return response()->json($admin, 200);
