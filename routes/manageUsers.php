@@ -19,8 +19,8 @@ Route::group([
     Route::patch('/subadmins/{id}/unactive' ,[ManageUsersController::class, 'subAdmin_unactive'])->middleware('auth:admin')->name('changeSubAdminStatus');
     Route::patch('/subadmins/{id}/active'   ,[ManageUsersController::class, 'subAdmin_active'  ])->middleware('auth:admin')->name('changeSubAdminStatus');
 
-    Route::patch('/members/{id}/status'     ,[ManageUsersController::class, 'member_status'    ])->middleware('auth:admin')->name('changeMemberStatus');
-
+    Route::patch('/members/{id}/unactive'     ,[ManageUsersController::class, 'member_unactive'    ])->middleware('auth:admin')->name('changeMemberStatus');
+    Route::patch('/members/{id}/active'       ,[ManageUsersController::class, 'member_active'    ])->middleware('auth:admin')->name('changeMemberStatus');
 
     Route::delete('/subadmins/{id}' ,[ManageUsersController::class, 'delete_subAdmin'])->middleware('auth:admin')->name('deleteSubAdmin');
     Route::delete('/members/{id}'   ,[ManageUsersController::class, 'delete_member'])->middleware('auth:admin')->name('deleteMember');

@@ -142,9 +142,9 @@ class AdminAuthController extends Controller
 
 
 
-    public function update_password(){
+    public function update_password($id){
     $validator = Validator::make(request()->all(), [
-        'id'               => 'required|exists:admins,id',
+        // 'id'               => 'required|exists:admins,id',
         'current_password' => 'required',
         'new_password'     => 'required|confirmed|min:8',
     ]);
@@ -153,7 +153,7 @@ class AdminAuthController extends Controller
         return response()->json($validator->errors(), 400);
     }
 
-    $admin = Admin::where('id', request()->id)->first();
+    $admin = Admin::where('id', $id)->first();
 
     // Check if the current password is correct
     if (Hash::check(request()->current_password, $admin->password)) {

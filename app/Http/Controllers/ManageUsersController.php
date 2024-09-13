@@ -24,17 +24,23 @@ class ManageUsersController extends Controller
 
     //-- Change Member Status ---
     //---------------------------
-    public function member_status($id){
+    public function member_unactive($id){
         $member = Member::where('id',$id)->first();
-        if($member->stauts == 'active'){
+        if($member){
             $member->status = 'unactive';
+            $member->save();
             return response()->json("unactive member successfully!", 200);
         }
-        else{
+        return response()->json("There is an error", 400);
+    }
+
+    public function member_active($id){
+        $member = Member::where('id',$id)->first();
+        if($member){
             $member->status = 'active';
+            $member->save();
             return response()->json("active member successfully!", 200);
         }
-    
         return response()->json("There is an error", 400);
     }
 

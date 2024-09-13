@@ -9,6 +9,7 @@ use App\Models\Like;
 use App\Models\Member;
 use Validator;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class ArticleController extends Controller
 {
@@ -20,7 +21,8 @@ class ArticleController extends Controller
 
     // Get One Article by ID
     public function Get_Article($id){
-        $article = Article::where('id',$id)->first();
+        $article = Article::find($id);
+        // if($article)
         return $article;
     }
 
@@ -34,10 +36,16 @@ class ArticleController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $imageName = time() . '_' . $image->getClientOriginalName();
-            $imagePath = $image->storeAs('images/articles', $imageName, 'public'); // Store image in 'public/images/articles'
-            $validatedData['image'] = $imagePath; // Save the image path to the validated data
+                        // Save the new image
+            $imageName = time() . '.' . request()->image->extension();
+            request()->image->move(public_path('images/articles'), $imageName);
+                
+                        // Update the profile picture URL
+                        $validatedData['image'] = 'images/articles/' . $imageName;
+            // $image = $request->file('image');
+            // $imageName = time() . '_' . $image->getClientOriginalName();
+            // $imagePath = $image->storeAs('images/articles', $imageName, 'public'); // Store image in 'public/images/articles'
+            // $validatedData['image'] = $imagePath; // Save the image path to the validated data
         }
 
         $article = Article::create($validatedData);
@@ -48,7 +56,7 @@ class ArticleController extends Controller
 
     // Update An Article
     public function Update_Article($id,Request $request){
-        $article = Article::where('id',$id)->first();
+        $article = Article::find($id);
         // Validate the incoming request data
         $validatedData = $request->validate([
             'title' => 'required|string|max:255',
@@ -64,16 +72,34 @@ class ArticleController extends Controller
                 Storage::disk('public')->delete($article->image);
             }
 
-            // Store the new image
-            $image = $request->file('image');
-            $imageName = time() . '_' . $image->getClientOriginalName();
-            $imagePath = $image->storeAs('images/articles', $imageName, 'public'); // Store image in 'public/images/articles'
-            $validatedData['image'] = $imagePath; // Save the new image path to the validated data
+        //     // Store the new image
+
+        $imageName = time() . '.' . request()->image->extension();
+        request()->image->move(public_path('images/articles'), $imageName);
+            
+                    // Update the profile picture URL
+                    $validatedData['image'] = 'images/articles/' . $imageName;
+            // $image = $request->file('image');
+            // $imageName = time() . '_' . $image->getClientOriginalName();
+            // $imagePath = $image->storeAs('images/articles', $imageName, 'public'); // Store image in 'public/images/articles'
+            // $validatedData['image'] = $imagePath; // Save the new image path to the validated data
         }
 
         // Update the article with the validated data (including the new image path if available)
         $article->update($validatedData);
-        return response()->json("Update Article $article->id successfully", 200);
+
+        // if($validation){
+        //     $article->title = $request->title;
+        //     $article->slug  = $request->slug;
+        //     $article->save();
+    
+            return response()->json("Update Article $article->id successfully", 200);
+
+        // }
+
+        // return response()->json("Faild To Update Article $article->id !", 400);
+
+
     }
 
     // Delete An Article
@@ -147,6 +173,7 @@ class ArticleController extends Controller
         if($article){
             $article->status       = "published";
             $article->published_at = now();
+            $article->save();
             return response()->json("Published Article $id is successfully!", 200);
         }
         return response()->json('there is an error!', 400);

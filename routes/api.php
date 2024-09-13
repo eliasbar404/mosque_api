@@ -22,7 +22,7 @@ Route::group([
     Route::post('/update_profile/{id}',  [AdminAuthController::class, 'update_profile'])->middleware('auth:admin')->name('update_profile');
 
     // update password
-    Route::post('/update_password', [AdminAuthController::class, 'update_password'])->middleware('auth:admin')->name('update_password');
+    Route::post('/update_password/{id}', [AdminAuthController::class, 'update_password'])->middleware('auth:admin')->name('update_password');
 });
 
 

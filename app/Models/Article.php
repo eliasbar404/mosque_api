@@ -10,8 +10,10 @@ class Article extends Model
 {
     use HasFactory, HasUuids;
 
+    // protected $primaryKey = 'id';
     protected $keyType = 'uuid';
     public $incrementing = false;
+
     public static function boot(){
         parent::boot();
         static::creating(function ($model) {
