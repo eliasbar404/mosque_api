@@ -17,7 +17,7 @@ class EventController extends Controller
 
     // Get Event By 
     public function get_event_by_id($id){
-        $event = Event::where('id',$id)->first();
+        $event = Event::find($id);
         return $event;
     }
 
@@ -36,7 +36,10 @@ class EventController extends Controller
         // Handle the image upload if provided
         $imagePath = null;
         if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('events', 'public/images');
+            // $imagePath = $request->file('image')->store('events', 'public/images');
+            $imageName = time() . '.' . $request->image->extension();
+            $request->image->move(public_path('images/events'), $imageName);
+            $imagePath = 'images/events/' . $imageName;
         }
 
         $event = Event::create([
@@ -59,11 +62,11 @@ class EventController extends Controller
     // Update Event
     public function update_event($id,Request $request){
         // Find event by ID
-        $event = Event::where('id',$id)->first();
+        $event = Event::find($id);
         // Validate the incoming request data
         $validatedData = $request->validate([
             'title'       => 'required|string|max:255',
-            'slug'        => 'required|string|max:255|unique:events',
+            'slug'        => 'required|string|max:255',
             'description' => 'required|string',
             'image'       => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'start_time'  => 'required|date',
@@ -73,12 +76,13 @@ class EventController extends Controller
         // Handle the image upload if provided
         if ($request->hasFile('image')) {
             // Delete the old image if it exists
-            if ($event->image) {
+            if ($event->image && Storage::disk('public')->exists($event->image)) {
                 Storage::disk('public')->delete($event->image);
             }
             // Store the new image
-            $imagePath = $request->file('image')->store('events', 'public/images');
-            $event->image = $imagePath;
+            $imageName = time() . '.' . $request->image->extension();
+            $request->image->move(public_path('images/events'), $imageName);
+            $event->image = 'images/events/' . $imageName;
         }
 
         // Update the event details
@@ -116,6 +120,7 @@ class EventController extends Controller
         if($event){
             $event->status = "published";
             $event->published_at = now();
+            $event->save();
             return response()->json("Publish The Event $event->id Successfully !", 200);
         }
         return response()->json("There is an error !!", 400);
