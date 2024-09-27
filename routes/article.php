@@ -13,12 +13,12 @@ Route::group([
     Route::get('/{id}'  ,[ArticleController::class, 'Get_Article'])->name('getArticle');
 
 
-    Route::post('/'      ,[ArticleController::class, 'Create_Article'])->middleware('auth:admin')->name('createArticle');
-    Route::post('/{id}/update'   ,[ArticleController::class, 'Update_Article'])->middleware('auth:admin')->name('updateArticle');
-    Route::delete('/{id}',[ArticleController::class, 'Delete_Article'])->middleware('auth:admin')->name('deleteArticle');
+    Route::post('/'      ,[ArticleController::class, 'Create_Article'])->middleware('auth:admin,subadmin')->name('createArticle');
+    Route::post('/{id}/update'   ,[ArticleController::class, 'Update_Article'])->middleware('auth:admin,subadmin')->name('updateArticle');
+    Route::delete('/{id}',[ArticleController::class, 'Delete_Article'])->middleware('auth:admi,subadminn')->name('deleteArticle');
 
     
-    Route::patch('/{id}/publish',[ArticleController::class, 'publish_article'])->middleware('auth:admin')->name('publishArticle'); 
+    Route::patch('/{id}/publish',[ArticleController::class, 'publish_article'])->middleware('auth:admin,subadmin')->name('publishArticle'); 
     Route::put('/{id}/view'   ,[ArticleController::class, 'increace_view_count'])->name('viewArticle');
 
 

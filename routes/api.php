@@ -61,10 +61,10 @@ Route::group([
     Route::post('/me', [SubAdminAuthController::class, 'me'])->middleware('auth:subadmin')->name('me');
 
     // update profile
-    Route::post('/update_profile',  [SubAdminAuthController::class, 'update_profile'])->middleware('auth:subadmin')->name('update_profile');
+    Route::post('/update_profile/{id}',  [SubAdminAuthController::class, 'update_profile'])->middleware('auth:subadmin')->name('update_profile');
 
     // update password
-    Route::post('/update_password',  [SubAdminAuthController::class, 'update_password'])->middleware('auth:subadmin')->name('update_password');
+    Route::post('/update_password/{id}',  [SubAdminAuthController::class, 'update_password'])->middleware('auth:subadmin')->name('update_password');
 });
 
 

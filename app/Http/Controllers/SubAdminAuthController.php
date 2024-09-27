@@ -105,20 +105,19 @@ class SubAdminAuthController extends Controller
     }
 
 
-    public function update_profile()
+    public function update_profile($id)
     {
         $validator = Validator::make(request()->all(), [
-            'id'              => 'required|exists:admins,id',
-            'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'name'            => 'required|string|max:255',
-            'status'          => 'nullable'
+            'email'           => 'required|email',
+            'profile_picture' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
     
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
         }
     
-        $subadmin = SubAdmin::where('id', request()->id)->first();
+        $subadmin = SubAdmin::where('id', $id)->first();
     
         // Check if a profile picture is uploaded
         if (request()->hasFile('profile_picture')) {
@@ -132,20 +131,21 @@ class SubAdminAuthController extends Controller
             request()->profile_picture->move(public_path('images/subadmin'), $imageName);
     
             // Update the profile picture URL
-            $subadmin->profile_picture_url = 'images/admin/' . $imageName;
+            $subadmin->profile_picture_url = 'images/subadmin/' . $imageName;
         }
     
         // Update the name
-        $subadmin->name = request()->name;
+        $subadmin->name  = request()->name;
+        $subadmin->email = request()->email;
         $subadmin->save();
     
         return response()->json($subadmin, 200);
     }
 
 
-    public function update_password(){
+    public function update_password($id){
         $validator = Validator::make(request()->all(), [
-            'id'               => 'required|exists:admins,id',
+            // 'id'               => 'required|exists:admins,id',
             'current_password' => 'required',
             'new_password'     => 'required|confirmed|min:8',
         ]);
@@ -154,7 +154,7 @@ class SubAdminAuthController extends Controller
             return response()->json($validator->errors(), 400);
         }
     
-        $subadmin = SubAdmin::where('id', request()->id)->first();
+        $subadmin = SubAdmin::where('id', $id)->first();
     
         // Check if the current password is correct
         if (Hash::check(request()->current_password, $subadmin->password)) {
