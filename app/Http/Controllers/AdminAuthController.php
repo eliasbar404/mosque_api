@@ -47,10 +47,17 @@ class AdminAuthController extends Controller
         $credentials = request(['email', 'password']);
   
         if (! $token = auth()->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            return response()->json(['error' => 'Vérifiez votre email ou votre mot de passe!'], 401);
         }
+
+        // if(auth()->user->status == "active"){
+            return $this->respondWithToken($token);
+        // }
+        // else{
+        //     return response()->json(['error' => 'Your account is banned contact the admins!'], 401);
+        // }
   
-        return $this->respondWithToken($token);
+        
     }
   
     /**

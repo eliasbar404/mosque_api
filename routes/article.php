@@ -15,7 +15,7 @@ Route::group([
 
     Route::post('/'      ,[ArticleController::class, 'Create_Article'])->middleware('auth:admin,subadmin')->name('createArticle');
     Route::post('/{id}/update'   ,[ArticleController::class, 'Update_Article'])->middleware('auth:admin,subadmin')->name('updateArticle');
-    Route::delete('/{id}',[ArticleController::class, 'Delete_Article'])->middleware('auth:admi,subadminn')->name('deleteArticle');
+    Route::delete('/{id}',[ArticleController::class, 'Delete_Article'])->middleware('auth:admin,subadmin')->name('deleteArticle');
 
     
     Route::patch('/{id}/publish',[ArticleController::class, 'publish_article'])->middleware('auth:admin,subadmin')->name('publishArticle'); 

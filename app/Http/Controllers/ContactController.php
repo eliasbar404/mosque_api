@@ -30,7 +30,7 @@ class ContactController extends Controller
         $contact->last_name     = request()->last_name;
         $contact->email         = request()->email;
         $contact->phone_number  = request()->phone_number;
-        $contact->message       = request()->city;
+        $contact->message       = request()->message;
         $contact->save();
 
         return response()->json($contact, 201);

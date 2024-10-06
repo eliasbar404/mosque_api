@@ -50,10 +50,15 @@ class SubAdminAuthController extends Controller
         $credentials = request(['email', 'password']);
 
         if (! $token = auth()->guard('subadmin')->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            return response()->json(['error' => 'Vérifiez votre email ou votre mot de passe!'], 401);
         }
 
-        return $this->respondWithToken($token);
+        if(auth()->guard('subadmin')->user()->status === "active"){
+            return $this->respondWithToken($token);
+        }
+        else{
+            return response()->json(['error' => 'Votre compte est banni contactez les admins!'], 401);
+        }
     }
   
     /**
@@ -164,7 +169,7 @@ class SubAdminAuthController extends Controller
     
             return response()->json($subadmin, 200);
         } else {
-            return response()->json(['error' => 'Current password is incorrect'], 400);
+            return response()->json(['error' => 'Le mot de passe actuel est incorrect'], 400);
         }
     }
 }
