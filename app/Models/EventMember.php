@@ -27,4 +27,12 @@ class EventMember extends Model
         'note',
         'status',
     ];
+
+    public function event(){
+        $this->belongsTo(Event::class);
+    }
+
+    public function member(){
+        $this->belongsTo(Member::class);
+    }
 }

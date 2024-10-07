@@ -33,7 +33,12 @@ class Event extends Model
     ];
 
 
-    // public function event_memmbers(){
-    //     $this->hasMany(Member::class);
+    // public function eventMembers(){
+    //     $this->hasMany(EventMember::class);
     // }
+
+    public function members()
+{
+    return $this->belongsToMany(Member::class, 'event_members')->withPivot('note','status','id');
+}
 }

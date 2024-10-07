@@ -84,4 +84,16 @@ class Member extends Authenticatable implements JWTSubject
     {
         return [];
     }
+
+
+
+
+    public function comments(){
+        return $this->hasMany(Comment::class);
+    }
+
+    public function events()
+{
+    return $this->belongsToMany(Event::class, 'event_members');
+}
 }

@@ -31,7 +31,7 @@ class Comment extends Model
 
     // get user
 
-    public function user(){
+    public function member(){
         return $this->belongsTo(Member::class);
     }
 

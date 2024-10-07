@@ -116,7 +116,7 @@ class ArticleController extends Controller
     // Like An Article
     public function Like_Article(){
         $validator = Validator::make(request()->all(), [
-            'memeber_id'         => 'required|exists:members,id',
+            'member_id'         => 'required|exists:members,id',
             'article_id'         => 'required|exists:articles,id',
         ]);
 
@@ -130,7 +130,7 @@ class ArticleController extends Controller
             $like = new Like;
             $like->id         =  \Illuminate\Support\Str::uuid(); // Generate UUID
             $like->article_id = request()->article_id;
-            $like->member_id  = request()->memeber_id;
+            $like->member_id  = request()->member_id;
             $like->save();
             return response()->json($like, 201);
         }
@@ -141,7 +141,7 @@ class ArticleController extends Controller
     // Comment An Article
     public function Comment_Article(){
         $validator = Validator::make(request()->all(), [
-            'memeber_id'         => 'required|exists:members,id',
+            'member_id'         => 'required|exists:members,id',
             'article_id'         => 'required|exists:articles,id',
             'comment'            => 'required|string'
         ]);
@@ -156,7 +156,7 @@ class ArticleController extends Controller
             $comment = new Comment;
             $comment->id         =  \Illuminate\Support\Str::uuid(); // Generate UUID
             $comment->article_id = request()->article_id;
-            $comment->member_id  = request()->memeber_id;
+            $comment->member_id  = request()->member_id;
             $comment->comment    = request()->comment;
             $comment->save();
             return response()->json($comment, 201);
@@ -186,6 +186,46 @@ class ArticleController extends Controller
         if($article){
             $article->view_count = $article->view_count+1;
             return response()->json("Increace view count of article $id is successfully!", 200);
+        }
+        return response()->json('there is an error!', 400);
+
+    }
+
+
+    // Get all Commonts of an article
+    public function Get_Article_Comments($id){
+        $article = Article::where('id',$id)->first();
+        if($article){
+            // return  $article->comments->user;
+            $comments = $article->comments()->with('member')->get();
+            return $comments->toArray();
+            // return $commentsArray;
+        }
+        return response()->json('there is an error!', 400);
+
+    }
+
+    public function Delete_Comment($id){
+        $comment = Comment::where('id',$id)->first();
+
+        if($comment){
+            // return  $article->comments->user;
+            $comment->delete();
+            return response()->json('comment deleted suss!', 200);
+        }
+        return response()->json('there is an error!', 400);
+
+    }
+
+    // get article likes
+
+    public function Article_Likes($id){
+        $article = Article::where('id',$id)->first();
+        if($article){
+            // return  $article->comments->user;
+            $likes = $article->likes;
+            return count($likes);
+            // return $commentsArray;
         }
         return response()->json('there is an error!', 400);
 

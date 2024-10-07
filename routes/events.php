@@ -19,6 +19,7 @@ Route::group([
     Route::put('/{id}/view'   ,[EventController::class, 'event_view_count'])->name('viewhEvent');
 
     Route::post('/join',           [EventController::class, 'join_event'])->middleware('auth:member')->name('joinEvent');
-    Route::put('/join/{id}/status',[EventController::class, 'join_event_status'])->middleware('auth:admin,subadmin')->name('statusEvent');
+    Route::post('/join/{id}/status',[EventController::class, 'join_event_status'])->middleware('auth:admin,subadmin')->name('statusEvent');
 
+    Route::get('/{id}/join/members',[EventController::class, 'Get_event_joins'])->middleware('auth:admin,subadmin')->name('GetEventsJoin');
 });

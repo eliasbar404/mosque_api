@@ -26,4 +26,10 @@ Route::group([
     Route::post('/like'   ,[ArticleController::class, 'Like_Article'])->middleware('auth:member')->name('likeArticle'); 
     Route::post('/comment',[ArticleController::class, 'Comment_Article'])->middleware('auth:member')->name('commentArticle'); 
 
+    Route::get('/{id}/comments',[ArticleController::class, 'Get_Article_Comments'])->middleware('auth:admin,subadmin')->name('GetArticleComments');
+
+
+    Route::delete('/comment/{id}',[ArticleController::class, 'Delete_Comment'])->middleware('auth:admin,subadmin')->name('DeleteComments');
+
+    Route::get('/{id}/likes' ,[ArticleController::class, 'Article_Likes'])->name('ArticleLikes');
 });

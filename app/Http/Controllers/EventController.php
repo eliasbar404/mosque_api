@@ -154,6 +154,7 @@ class EventController extends Controller
         $event_member->event_id  = $request->event_id;
         $event_member->member_id = $request->member_id;
         $event_member->note      = $request->note;
+        $event_member->save();
 
         return response()->json("Create Event_member $event_member->id Successfully !", 200);
 
@@ -162,15 +163,30 @@ class EventController extends Controller
     // join event status
     public function join_event_status($id,Request $request){
         $request->validate([
-            'status'    => 'required|in:rejected,accepted',
+            'status'    => 'required',
         ]);
 
         $event_member = EventMember::where('id',$id)->first();
         if($event_member){
             $event_member->status = $request->status;
+            $event_member->save();
             return response()->json("You $request->status member to join the event", 200);
         }
 
+        return response()->json("There is an error !!", 400);
+
+    }
+
+
+
+    public function Get_event_joins($id){
+
+        $event = Event::where('id',$id)->first();
+        if($event){
+            $event_joins = $event->with('members')->get();
+            return $event_joins->toArray();
+            // return response()->json("Increase view count of  The Event $event->id Successfully !", 200);
+        }
         return response()->json("There is an error !!", 400);
 
     }
